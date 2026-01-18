@@ -1,0 +1,13 @@
+.env
+__pycache__/
+*.pyc
+logs/
+data/
+!data/.gitkeep
+medical_warehouse/dbt_packages/
+medical_warehouse/target/
+medical_warehouse/logs/
+.vscode/
+.idea/
+venv/
+.DS_Store

@@ -1,0 +1,15 @@
+telethon==1.36.0
+python-dotenv==1.0.1
+pandas==2.2.2
+loguru==0.7.2
+fastapi==0.111.0
+uvicorn==0.30.1
+sqlalchemy==2.0.30
+psycopg2-binary==2.9.9
+pydantic==2.7.4
+dbt-postgres==1.8.2
+dagster==1.7.10
+dagster-webserver==1.7.10
+ultralytics==8.2.28
+opencv-python-headless==4.9.0.80
+requests==2.32.3
