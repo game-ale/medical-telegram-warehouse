@@ -30,8 +30,8 @@ CHANNELS = [
     'CheMed123',         # CheMed Telegram Channel
     'lobelia4cosmetics', # Lobelia Cosmetics
     'tikvahpharma',      # Tikvah Pharma
-    'HealthIssue',       # Health Issue_ስለጤና (75.9K subs)
-    'Medical_School_Eth' # Medical School 🇪🇹
+    'DoctorsET',         # Doctors Ethiopia
+    'MohEthiopia'        # Ministry of Health Ethiopia
 ]
 
 async def scrape_channel(client, channel_name):
