@@ -1,0 +1,52 @@
+
+version: 2
+
+models:
+  - name: dim_channels
+    description: "Dimension table containing aggregated information about Telegram channels."
+    columns:
+      - name: channel_key
+        description: "Surrogate key for the channel."
+        tests: [unique, not_null]
+      - name: channel_name
+        description: "Name of the Telegram channel."
+      - name: channel_type
+        description: "Category of the channel (Pharmaceutical, Cosmetics, Medical, etc.) inferred from name."
+      - name: total_posts
+        description: "Total number of messages scraped from this channel."
+      - name: avg_views
+        description: "Average view count per message for this channel."
+
+  - name: dim_dates
+    description: "Date dimension for temporal analysis."
+    columns:
+      - name: date_key
+        description: "Surrogate key for the date."
+        tests: [unique, not_null]
+      - name: full_date
+        description: "The actual date."
+      - name: is_weekend
+        description: "Boolean flag indicating if the date falls on a weekend."
+
+  - name: fct_messages
+    description: "Fact table containing individual telegram messages and their metrics."
+    columns:
+      - name: message_id
+        description: "Original message ID from Telegram."
+        tests: [unique, not_null]
+      - name: channel_key
+        description: "Foreign key linking to dim_channels."
+        tests:
+          - relationships:
+              to: ref('dim_channels')
+              field: channel_key
+      - name: date_key
+        description: "Foreign key linking to dim_dates."
+        tests:
+          - relationships:
+              to: ref('dim_dates')
+              field: date_key
+      - name: view_count
+        description: "Number of views the message received."
+      - name: has_media
+        description: "Flag indicating if the message contained an image."
