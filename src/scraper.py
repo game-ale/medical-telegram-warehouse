@@ -27,10 +27,11 @@ logger.add(f"{LOG_DIR}/scraper.log", rotation="10 MB", level="INFO")
 
 # Channels to scrape
 CHANNELS = [
-    'CheMed123',         # CheMed Telegram Channel (Assuming this is the username, verify)
+    'CheMed123',         # CheMed Telegram Channel
     'lobelia4cosmetics', # Lobelia Cosmetics
     'tikvahpharma',      # Tikvah Pharma
-    # Add more channels here
+    'HealthIssue',       # Health Issue_ስለጤና (75.9K subs)
+    'Medical_School_Eth' # Medical School 🇪🇹
 ]
 
 async def scrape_channel(client, channel_name):
