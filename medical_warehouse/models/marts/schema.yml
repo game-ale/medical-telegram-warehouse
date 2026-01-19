@@ -50,3 +50,13 @@ models:
         description: "Number of views the message received."
       - name: has_media
         description: "Flag indicating if the message contained an image."
+
+  - name: fct_detections
+    description: "Fact table containing object detections from images."
+    columns:
+      - name: message_id
+        description: "Message ID associated with the image."
+      - name: class_name
+        description: "Detected object class (e.g., bottle, person)."
+      - name: confidence
+        description: "Confidence score of the detection (0-1)."
