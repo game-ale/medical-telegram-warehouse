@@ -241,6 +241,17 @@ As we move to the next phases (Enrichment and Orchestration), we anticipate seve
 *   **Challenge**: **Dependency Management**. Ensuring the dbt run only happens *after* the scraper has effectively finished.
 *   **Solution**: Dagster's asset-based approach fits perfectly here. We will define the `postgres_table` as an asset that depends on the `json_files` asset, creating a rigid execution graph.
 
+### Summary of Risks & Mitigations (Task 3 Focus)
+| Drawback | Impact | Mitigation |
+| :--- | :--- | :--- |
+| **General-purpose model** | Misclassification of specialized medical items. | **Confidence thresholding** (e.g., > 0.5) and focusing on generic relevant classes (e.g., "bottle"). |
+| **CPU inference** | Slow processing speeds. | **Batch + offline processing** (historical backlog) instead of real-time streaming. |
+| **Limited semantics** | No drug-level insight (can't read labels). | **Combine with text analysis** (the message text) for context. |
+| **Data growth** | Larger, heavier fact tables. | Keep raw detections in **JSONB**; create filtered/aggregated **marts** for analytics. |
+| **Partial image coverage** | Sampling bias (not all posts have images). | Create a **separate vision fact table** (`fct_detections`) rather than forcing it into the main message grain. |
+| **Added complexity** | Harder orchestration and debugging. | **Modular design** (separate script) + **Dagster** for clear dependency management. |
+| **Ethical risk** | Misinterpretation of automated tags. | **Clear analytical disclaimer** that tags are AI-generated and not medical advice. |
+
 ---
 
 ## 10. Challenges & Solutions (Current)
