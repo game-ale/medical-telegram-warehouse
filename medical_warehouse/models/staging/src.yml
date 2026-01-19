@@ -7,3 +7,4 @@ sources:
     schema: raw
     tables:
       - name: telegram_messages
+      - name: yolo_detections
