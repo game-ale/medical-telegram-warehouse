@@ -118,6 +118,15 @@ python src/yolo_detect.py
 ```
 This classifies images and saves results to `data/raw/yolo_detections.csv`.
 
+### Task 4: Analytical API (Serve)
+
+Expose data warehouse insights via a production-ready FastAPI interface.
+```bash
+uvicorn api.main:app --reload
+```
+- **Documentation**: Accessible at `http://localhost:8000/docs`
+- **Endpoints**: Top products, Channel activity, Keyword search, Visual stats.
+
 ---
 
 ## 📊 Data Model (Star Schema)
@@ -148,7 +157,10 @@ Our Data Warehouse is organized into a Star Schema optimized for analytics:
     - Categories: `promotional`, `product_display`, `lifestyle`, `other`.
     - Created `fct_image_detections` to link vision insights with messages.
     - **Limitations**: Uses pre-trained YOLOv8 model; effective for general object detection (bottles, people) but limited in domain-specific medical label recognition.
-- **[ ] Task 4: API Development**
+- **[x] Task 4: API Development**
+    - Analytical FastAPI interface implemented.
+    - Endpoints for products, channels, search, and image stats.
+    - Full Swagger/OpenAPI documentation.
 - **[ ] Task 5: Orchestration**
 
 ---
