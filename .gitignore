@@ -4,9 +4,9 @@ __pycache__/
 logs/
 data/
 !data/.gitkeep
-medical_warehouse/dbt_packages/
-medical_warehouse/target/
-medical_warehouse/logs/
+dbt_packages/
+target/
+logs/
 .vscode/
 .idea/
 venv/
