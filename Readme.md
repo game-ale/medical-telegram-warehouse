@@ -127,6 +127,15 @@ uvicorn api.main:app --reload
 - **Documentation**: Accessible at `http://localhost:8000/docs`
 - **Endpoints**: Top products, Channel activity, Keyword search, Visual stats.
 
+### Task 5: Orchestration (Dagster)
+
+Orchestrate the entire pipeline (Scraping -> Loading -> YOLO -> dbt) using Dagster.
+```bash
+dagster dev -f orchestration/definitions.py
+```
+- **Lineage**: View the full dependency graph in the Dagster UI (`Extraction -> Ingestion -> Enrichment -> Transformation`).
+- **Automation**: Schedule runs and monitor asset health.
+
 ---
 
 ## 📊 Data Model (Star Schema)
@@ -161,7 +170,10 @@ Our Data Warehouse is organized into a Star Schema optimized for analytics:
     - Analytical FastAPI interface implemented.
     - Endpoints for products, channels, search, and image stats.
     - Full Swagger/OpenAPI documentation.
-- **[ ] Task 5: Orchestration**
+- **[x] Task 5: Orchestration (Dagster)**
+    - End-to-end pipeline defined as Dagster assets.
+    - Full lineage and dependency management implemented.
+    - Simplified execution via `dagster dev`.
 
 ---
 
