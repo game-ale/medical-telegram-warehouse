@@ -6,8 +6,17 @@ data/
 !data/.gitkeep
 dbt_packages/
 target/
-logs/
 .vscode/
 .idea/
 venv/
 .DS_Store
+
+# Telegram session files (SENSITIVE)
+*.session
+
+# Log and temporary files
+*.log
+.user.yml
+
+# Model weights (Large files)
+*.pt

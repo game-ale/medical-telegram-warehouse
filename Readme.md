@@ -110,14 +110,23 @@ dbt docs generate
 dbt docs serve
 ```
 
+### Task 3: Object Detection (Enrichment)
+
+Run YOLOv8 object detection on scrambled images to classify them into `promotional`, `product_display`, `lifestyle`, or `other`.
+```bash
+python src/yolo_detect.py
+```
+This classifies images and saves results to `data/raw/yolo_detections.csv`.
+
 ---
 
 ## 📊 Data Model (Star Schema)
 
 Our Data Warehouse is organized into a Star Schema optimized for analytics:
 
-### Fact Table
+### Fact Tables
 -   **`fct_messages`**: Central table containing individual messages, view counts, and metrics.
+-   **`fct_image_detections`**: Enriched table mapping messages to object detection results and categories.
 
 ### Dimension Tables
 -   **`dim_channels`**: Channel metadata, including calculated metrics like `total_posts` and `avg_views`.
@@ -134,7 +143,11 @@ Our Data Warehouse is organized into a Star Schema optimized for analytics:
     - Raw data loading pipeline (JSON -> Postgres).
     - Star Schema implemented (`dim_channels`, `dim_dates`, `fct_messages`).
     - Comprehensive data quality tests (Unique, Not Null, Relationships).
-- **[ ] Task 3: Object Detection (YOLO)** (Next)
+- **[x] Task 3: Object Detection (YOLO)**
+    - Integrated YOLOv8 for automated product classification.
+    - Categories: `promotional`, `product_display`, `lifestyle`, `other`.
+    - Created `fct_image_detections` to link vision insights with messages.
+    - **Limitations**: Uses pre-trained YOLOv8 model; effective for general object detection (bottles, people) but limited in domain-specific medical label recognition.
 - **[ ] Task 4: API Development**
 - **[ ] Task 5: Orchestration**
 

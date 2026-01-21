@@ -51,12 +51,33 @@ models:
       - name: has_media
         description: "Flag indicating if the message contained an image."
 
-  - name: fct_detections
-    description: "Fact table containing object detections from images."
+  - name: fct_image_detections
+    description: "Fact table containing object detections from images and their categories."
     columns:
       - name: message_id
         description: "Message ID associated with the image."
-      - name: class_name
-        description: "Detected object class (e.g., bottle, person)."
-      - name: confidence
-        description: "Confidence score of the detection (0-1)."
+        tests: [not_null]
+      - name: channel_key
+        description: "Foreign key linking to dim_channels."
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_channels')
+              field: channel_key
+      - name: date_key
+        description: "Foreign key linking to dim_dates."
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_dates')
+              field: date_key
+      - name: detected_class
+        description: "Detected object classes."
+      - name: confidence_score
+        description: "Max confidence score."
+      - name: image_category
+        description: "Classified category."
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['promotional', 'product_display', 'lifestyle', 'other']
