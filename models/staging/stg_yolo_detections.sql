@@ -1,19 +1,12 @@
 with raw_detections as (
+    -- Assuming CSV is loaded into a table named yolo_detections in the raw schema
     select * from {{ source('raw', 'yolo_detections') }}
-),
-
-flattened as (
-    select
-        message_id,
-        channel_name,
-        jsonb_array_elements(detection_data) as detection
-    from raw_detections
 )
 
 select
-    message_id,
-    channel_name,
-    detection->>'class' as class_name,
-    cast(detection->>'confidence' as float) as confidence,
-    detection->>'bbox' as bbox
-from flattened
+    cast(message_id as bigint) as message_id,
+    image_path,
+    detected_class,
+    cast(confidence_score as float) as confidence_score,
+    image_category
+from raw_detections

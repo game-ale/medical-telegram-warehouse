@@ -1,0 +1,17 @@
+version: 2
+
+models:
+  - name: stg_yolo_detections
+    description: "Staging model for YOLO detections from raw.yolo_detections"
+    columns:
+      - name: message_id
+        description: "Unique message ID"
+        tests:
+          - not_null
+          - unique
+      - name: image_category
+        description: "Category of the image detected by YOLO"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['promotional', 'product_display', 'lifestyle', 'other']

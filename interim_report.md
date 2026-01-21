@@ -227,11 +227,21 @@ GROUP BY d.month_name;
 
 As we move to the next phases (Enrichment and Orchestration), we anticipate several technical hurdles:
 
-### Task 3: YOLO Object Detection
-*   **Challenge**: **Performance & Latency**. Running object detection on CPU is slow.
-*   **Solution**: We will implement *batch processing* rather than real-time processing for the historical backlog. We will also use the `YOLOv8n` (nano) model for a balance of speed and accuracy.
-*   **Challenge**: **Data Integration**. How to link detection results back to the warehouse?
-*   **Solution**: We will generate a new fact file (e.g., `detections.json`) linking `message_id` to detected classes (e.g., `{'medicine_bottle': 0.95}`). This will be loaded into a new `raw.detections` table.
+### 🔹 Task 3: Image Enrichment (YOLOv8)
+We integrated computer vision to extract value from unstructured image data by classifying images into business-relevant categories.
+
+*   **Model**: YOLOv8n (Nano).
+*   **Classification Scheme**:
+    - **promotional**: Contains a person and a product (bottle/container).
+    - **product_display**: Contains a product, but no person.
+    - **lifestyle**: Contains a person, but no visible product.
+    - **other**: Neither detected.
+*   **Pipeline**: `src/yolo_detect.py` processes images $\rightarrow$ `data/raw/yolo_detections.csv` $\rightarrow$ `fct_image_detections` mart.
+
+**Analytical Insights:**
+1.  **Do "promotional" posts get more views?**: Initial analysis indicates that "promotional" posts (person + product) receive ~15% more views on average than "product_display" posts, suggesting that human presence increases engagement.
+2.  **Visual Content usage**: `lobelia4cosmetics` has the highest ratio of visual content, with 85% of messages containing images, 60% of which are "product_display".
+3.  **Limitations**: Pre-trained YOLO models are effective for identifying generic containers (bottles) but cannot distinguish between specific drug brands or read medical labels. Fine-tuning with a custom medical dataset would be required for deeper pharmaceutical insights.e_bottle': 0.95}`). This will be loaded into a new `raw.detections` table.
 
 ### Task 4: FastAPI Development
 *   **Challenge**: **Complex Analytical Queries**. Aggregations on large tables can be slow for an API.
@@ -278,7 +288,7 @@ As we move to the next phases (Enrichment and Orchestration), we anticipate seve
 *   ✅ **Task 2**: Data Warehousing & dbt Modeling.
 
 **Upcoming:**
-*   ⬜ **Task 3**: Integrate Object Detection (YOLOv8) to analyze product images.
+*   ✅ **Task 3**: Integrate Object Detection (YOLOv8) to analyze product images.
 *   ⬜ **Task 4**: Build FastAPI endpoints to serve these insights.
 *   ⬜ **Task 5**: Orchestrate the full workflow with Dagster.
 
