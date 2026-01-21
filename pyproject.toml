@@ -1,0 +1,3 @@
+[tool.dagster]
+module_name = "orchestration.definitions"
+project_name = "medical_warehouse_orchestration"
