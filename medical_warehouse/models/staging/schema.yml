@@ -1,0 +1,16 @@
+version: 2
+
+sources:
+  - name: raw
+    database: medical_warehouse
+    schema: raw
+    tables:
+      - name: telegram_messages
+
+models:
+  - name: stg_telegram_messages
+    description: "Cleaned telegram messages"
+    columns:
+      - name: message_id
+        tests:
+          - not_null

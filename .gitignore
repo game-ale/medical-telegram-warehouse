@@ -1,25 +1,57 @@
-# Secrets
+# Secrets and Credentials
 .env
 .env.*
+*.pem
+*.key
 
-# Telethon Session Files (Critical - contains auth)
+# Telethon Session Files (Critical - contains auth tokens)
 *.session
 *.session-journal
 
 # Python
 venv/
+env/
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
+.Python
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
 
 # Logs
 *.log
 logs/
 
+# dbt artifacts
+medical_warehouse/target/
+medical_warehouse/dbt_packages/
+medical_warehouse/logs/
+medical_warehouse/dbt_modules/
+
+# Data (do not commit scraped data)
+data/
+
+# Scripts output/temporary files
+scripts/loader_status.txt
+scripts/error.log
+scripts/loader.log
+scripts/loader_log.txt
+
+# Docker
+docker-compose.override.yml
+
 # OS specific
 .DS_Store
 Thumbs.db
+desktop.ini
 
-# IDE specific (optional but recommended to ignore local user settings if not shared)
+# IDE specific
 .idea/
+.vscode/
+*.swp
+*.swo
+*~

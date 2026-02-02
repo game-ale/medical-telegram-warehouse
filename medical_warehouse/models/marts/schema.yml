@@ -1,0 +1,35 @@
+version: 2
+
+models:
+  - name: dim_channels
+    columns:
+      - name: channel_key
+        tests:
+          - unique
+          - not_null
+
+  - name: dim_dates
+    columns:
+      - name: date_key
+        tests:
+          - unique
+          - not_null
+
+  - name: fct_messages
+    columns:
+      - name: message_id
+        tests:
+          - unique
+          - not_null
+      - name: channel_key
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_channels')
+              field: channel_key
+      - name: date_key
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_dates')
+              field: date_key
