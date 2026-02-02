@@ -22,4 +22,4 @@ from stg_yolo
 -- Join dim_channels on channel_name (present in staging)
 left join dim_channels on stg_yolo.channel_name = dim_channels.channel_name
 -- Join fct_messages to get the date_key (it already has it)
-left join fct_messages on stg_yolo.message_id = fct_messages.message_id
+inner join fct_messages on stg_yolo.message_id = fct_messages.message_id

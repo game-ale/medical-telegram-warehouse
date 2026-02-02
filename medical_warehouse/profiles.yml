@@ -6,7 +6,7 @@ medical_warehouse:
       host: "{{ env_var('DB_HOST') }}"
       user: "{{ env_var('DB_USER') }}"
       pass: "{{ env_var('DB_PASSWORD') }}"
-      port: 5432
+      port: "{{ env_var('DB_PORT') | as_number }}"
       dbname: "{{ env_var('DB_NAME') }}"
       schema: public
       threads: 4
