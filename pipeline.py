@@ -10,7 +10,7 @@ This pipeline orchestrates the entire data flow:
 
 import os
 import subprocess
-from dagster import op, job, schedule, ScheduleDefinition, get_dagster_logger
+from dagster import op, job, schedule, ScheduleDefinition, get_dagster_logger, Definitions
 
 # ===== OPERATIONS (OPS) =====
 
@@ -158,7 +158,6 @@ def medical_data_pipeline():
 @schedule(
     cron_schedule="0 2 * * *",  # Daily at 2:00 AM
     job=medical_data_pipeline,
-    execution_timezone="Africa/Addis_Ababa"  # Ethiopia timezone (EAT, UTC+3)
 )
 def daily_pipeline_schedule(context):
     """
@@ -176,3 +175,9 @@ def daily_pipeline_schedule(context):
 # )
 # def test_pipeline_schedule(context):
 #     return {}
+# ===== DEFINITIONS (REGISTRY) =====
+
+defs = Definitions(
+    jobs=[medical_data_pipeline],
+    schedules=[daily_pipeline_schedule],
+)
