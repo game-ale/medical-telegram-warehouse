@@ -1,315 +1,462 @@
-# Medical Telegram Warehouse
-**An End-to-End Data Pipeline for Ethiopian Medical Businesses**
+# Medical Data Warehouse
 
-## 📋 Project Overview
-This project builds a robust data platform that generates actionable insights about Ethiopian medical businesses using data scraped from public Telegram channels. The pipeline implements a modern ELT (Extract, Load, Transform) architecture with the following components:
+End-to-end data pipeline for Telegram medical channel analytics, featuring data scraping, transformation, YOLO-based image enrichment, and a REST API.
 
-- **Task 1**: Data Scraping & Collection (Extract & Load) ✅ **COMPLETED**
-- **Task 2**: Data Modeling & Transformation (dbt + PostgreSQL)
-- **Task 3**: Data Enrichment with YOLO Object Detection
-- **Task 4**: Analytical API with FastAPI
-- **Task 5**: Pipeline Orchestration with Dagster
+## 📋 Table of Contents
 
----
-
-## ✅ Task 1: Data Scraping and Collection
-
-### Overview
-Task 1 implements a **Telegram scraper** that extracts messages and images from Ethiopian medical channels and stores them in a structured **Data Lake**. The scraper preserves raw data in its original form for downstream processing.
-
-### Channels Scraped
-- **CheMed123** - Medical products
-- **lobelia4cosmetics** - Cosmetics and health products
-- **tikvahpharma** - Pharmaceuticals
-- **DoctorsET** - Medical professionals community
-- **EAHCI** - Ethiopian Association of Health Care
-
-### Key Features
-✅ **Incremental data collection** from Telegram API  
-✅ **Automated image downloading** with organized storage  
-✅ **Date-partitioned JSON storage** for efficient querying  
-✅ **Comprehensive logging** for observability  
-✅ **Error handling** for network issues and rate limits  
-✅ **Session-based authentication** (one-time OTP login)
+- [Overview](#overview)
+- [Architecture](#architecture)
+- [Setup & Installation](#setup--installation)
+- [Usage Guide](#usage-guide)
+- [API Documentation](#api-documentation)
+- [Project Structure](#project-structure)
+- [Technologies](#technologies)
 
 ---
 
-## 🚀 Quick Start
+## Overview
+
+This project builds a complete data warehouse pipeline:
+
+1. **Extract**: Scrape messages and images from Telegram medical channels
+2. **Load**: Store raw data in PostgreSQL
+3. **Transform**: Clean and model data using dbt (star schema)
+4. **Enrich**: Classify images using YOLOv8 object detection
+5. **Serve**: Expose insights via FastAPI REST endpoints
+
+**Key Features:**
+- 📊 Dimensional data modeling (fact & dimension tables)
+- 🖼️ Image classification (promotional, product_display, lifestyle, other)
+- 🔍 Full-text message search
+- 📈 Channel activity analytics
+- ✅ Data quality tests with dbt
+
+---
+
+## Architecture
+
+```
+Telegram Channels
+      ↓
+[Scraper (Telethon)] → data/raw/
+      ↓
+[PostgreSQL (raw schema)]
+      ↓
+[dbt Transformations] → public_marts schema
+      ↓                    ├── dim_channels
+      ↓                    ├── dim_dates
+      ↓                    ├── fct_messages
+      ↓                    └── fct_image_detections
+[FastAPI] → REST Endpoints
+```
+
+**Data Model (Star Schema):**
+- **Fact Tables**: `fct_messages`, `fct_image_detections`
+- **Dimension Tables**: `dim_channels`, `dim_dates`
+
+---
+
+## Setup & Installation
 
 ### Prerequisites
-- Python 3.8 or higher
-- Telegram account
-- API credentials from [my.telegram.org](https://my.telegram.org)
 
-### Installation
+- Python 3.8+
+- Docker & Docker Compose
+- Telegram API credentials ([get them here](https://my.telegram.org))
 
-1. **Clone the repository**:
-   ```bash
-   git clone <repository-url>
-   cd medical-telegram-warehouse
-   ```
+### 1. Clone & Environment Setup
 
-2. **Create a virtual environment**:
-   ```bash
-   python -m venv venv
-   venv\Scripts\activate  # Windows
-   # source venv/bin/activate  # Linux/Mac
-   ```
+```bash
+cd C:\tele\medical-telegram-warehouse
 
-3. **Install dependencies**:
-   ```bash
-   pip install -r requirements.txt
-   ```
+# Create virtual environment
+python -m venv venv
+venv\Scripts\activate
 
-4. **Configure environment variables**:
-   
-   Create or edit `.env` file:
-   ```env
-   TG_API_ID=your_api_id_here
-   TG_API_HASH=your_api_hash_here
-   TG_PHONE=+251900000000  # Optional
-   ```
+# Install dependencies
+pip install -r requirements.txt
+```
 
-   **⚠️ IMPORTANT**: Never commit `.env` or `*.session` files to git!
+### 2. Configure Environment Variables
 
-### Running the Scraper
+Create `.env` file in project root:
 
-**First-time run** (requires interactive login):
+```env
+# Telegram API
+API_ID=your_api_id
+API_HASH=your_api_hash
+PHONE_NUMBER=your_phone_number
+
+# PostgreSQL
+DB_USER=postgres
+DB_PASSWORD=postgres
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=medical_warehouse
+```
+
+### 3. Start PostgreSQL
+
+```bash
+docker-compose up -d
+```
+
+Verify database is running:
+```bash
+docker exec -it medical_postgres psql -U postgres -d medical_warehouse
+```
+
+### 4. Run the Pipeline
+
+#### Step 1: Scrape Data
 ```bash
 python src/scraper.py
 ```
+- Scrapes messages from configured channels
+- Downloads images to `data/raw/images/`
+- Saves metadata to `data/raw/telegram_messages/`
 
-You'll be prompted to:
-1. Enter your phone number
-2. Enter the OTP code sent to Telegram
-
-After successful authentication, a `medical_scraper_session.session` file is created for future non-interactive runs.
-
-**Subsequent runs** (automated):
+#### Step 2: Load to Database
 ```bash
-python src/scraper.py
+python scripts/load_to_postgres.py
+```
+- Creates `raw.telegram_messages` table
+- Loads JSON data into PostgreSQL
+
+#### Step 3: Transform with dbt
+```bash
+python scripts/dbt_wrapper.py run
+python scripts/dbt_wrapper.py test
+```
+- Builds staging and mart models
+- Runs data quality tests
+
+#### Step 4: YOLO Image Enrichment
+```bash
+# Run object detection
+python src/yolo_detect.py
+
+# Load detections to database
+python scripts/load_yolo_to_postgres.py
+
+# Rebuild dbt models with YOLO data
+python scripts/dbt_wrapper.py run
+```
+
+#### Step 5: Start API
+```bash
+uvicorn api.main:app --reload --port 8000
+```
+
+Access Swagger UI: **http://127.0.0.1:8000/docs**
+
+---
+
+## Usage Guide
+
+### Scraping New Channels
+
+Edit `src/scraper.py` to add channels:
+
+```python
+CHANNELS = [
+    'CheMed123',
+    'DoctorsET',
+    'your_new_channel'
+]
+```
+
+### Running dbt Commands
+
+Always use the wrapper script to load environment variables:
+
+```bash
+# Run models
+python scripts/dbt_wrapper.py run
+
+# Run tests
+python scripts/dbt_wrapper.py test
+
+# Generate documentation
+python scripts/dbt_wrapper.py docs generate
+python scripts/dbt_wrapper.py docs serve
+```
+
+### Querying the Warehouse
+
+```sql
+-- Connect to database
+docker exec -it medical_postgres psql -U postgres -d medical_warehouse
+
+-- Top channels by messages
+SELECT channel_name, total_posts, avg_views
+FROM public_marts.dim_channels
+ORDER BY total_posts DESC;
+
+-- Messages with promotional images
+SELECT m.message_text, i.image_category, i.detected_object
+FROM public_marts.fct_messages m
+JOIN public_marts.fct_image_detections i ON m.message_id = i.message_id
+WHERE i.image_category = 'promotional';
 ```
 
 ---
 
-## 📁 Data Lake Structure
+## API Documentation
 
-The scraper produces a **strict folder hierarchy** for organized data storage:
-
+### Base URL
 ```
-data/raw/
-├── telegram_messages/
-│   └── YYYY-MM-DD/              # Date partition
-│       ├── CheMed123.json       # Channel-specific JSON
-│       ├── lobelia4cosmetics.json
-│       └── tikvahpharma.json
-└── images/
-    ├── CheMed123/               # Channel-specific folder
-    │   ├── 123456.jpg          # message_id.jpg
-    │   └── 123457.jpg
-    ├── lobelia4cosmetics/
-    └── tikvahpharma/
+http://127.0.0.1:8000
 ```
 
-### JSON Schema
+### Endpoints
 
-Each JSON file contains an **array of message objects** with the following structure:
+#### 1. Top Products
+```http
+GET /api/reports/top-products?limit=10
+```
 
+**Response:**
 ```json
 [
   {
-    "message_id": 189986,
-    "channel_name": "tikvahpharma",
-    "message_date": "2026-02-02T05:25:08+00:00",
-    "message_text": "TO BE SOLD PHARMACY...",
-    "views": 117,
-    "forwards": 0,
-    "has_media": true,
-    "image_path": "data/raw/images\\tikvahpharma\\189986.jpg"
+    "keyword": "telegram",
+    "frequency": 207
+  },
+  {
+    "keyword": "pharmacy",
+    "frequency": 116
   }
 ]
 ```
 
-**Field Descriptions**:
-- `message_id`: Unique Telegram message identifier (integer)
-- `channel_name`: Channel username (string)
-- `message_date`: ISO 8601 timestamp with timezone (string)
-- `message_text`: Full message content, preserved as-is (string or null)
-- `views`: Number of views on the message (integer, 0 if unavailable)
-- `forwards`: Number of times the message was forwarded (integer, 0 if unavailable)
-- `has_media`: Boolean indicating if message contains media (boolean)
-- `image_path`: Relative path to downloaded image, or `null` if no image (string or null)
-
----
-
-## 🪵 Logging
-
-Logs are stored in the `logs/` directory with timestamps:
-
-```
-logs/
-└── scraper_20260202_093549.log
+#### 2. Channel Activity
+```http
+GET /api/channels/{channel_name}/activity
 ```
 
-**Log contents include**:
-- Script start/end times
-- Channel scraping progress
-- Message counts per channel
-- Error messages (rate limits, network failures, etc.)
-
-**Example log output**:
-```
-2026-02-02 09:35:49,123 - INFO - Script started.
-2026-02-02 09:35:51,456 - INFO - Starting scrape for channel: CheMed123
-2026-02-02 09:36:02,789 - INFO - Finished scraping CheMed123. Processed 76 messages.
-2026-02-02 09:36:45,012 - INFO - Script finished.
+**Example:**
+```bash
+curl http://127.0.0.1:8000/api/channels/CheMed123/activity
 ```
 
----
-
-## 🧪 Data Quality & Validation
-
-### Self-Test Checklist
-Before considering Task 1 complete, verify:
-
-- ✅ **Raw data is unchanged**: No transformations applied
-- ✅ **dbt can load JSON easily**: Flat structure, consistent schema
-- ✅ **YOLO can find images**: Images stored in predictable paths
-- ✅ **Folder navigation is intuitive**: 10-second rule for reviewers
-
-### Known Limitations
-
-1. **Rate Limiting**: Telegram API has rate limits; the scraper handles basic retry logic but may pause on heavy usage.
-2. **Message Limit**: Current implementation limits to 100 messages per channel (configurable in code).
-3. **Media Types**: Only downloads photos (`.jpg`); videos and documents are not downloaded.
-4. **Text Encoding**: Some special characters may appear with markdown formatting.
-
----
-
-## 🔧 Technical Implementation
-
-### Architecture
-- **Library**: [Telethon](https://docs.telethon.dev/) - Async Python client for Telegram
-- **Storage Format**: JSON (human-readable, dbt-compatible)
-- **Image Format**: JPEG (compressed)
-- **Logging**: Python `logging` module
-
-### Error Handling
-- **Network errors**: Logged and skipped
-- **Missing fields**: Defaults to `0` (views/forwards) or `null` (image_path)
-- **Empty messages**: Handled gracefully (text stored as `null` or empty string)
-- **Rate limits**: Basic exception catching (future: exponential backoff)
-
-### Code Organization
-```
-src/
-└── scraper.py          # Main scraper logic
-    ├── scrape_channel()    # Per-channel scraping
-    ├── main()              # Orchestrates all channels
-    └── Logging setup       # Configures log files
+**Response:**
+```json
+{
+  "channel_name": "CheMed123",
+  "total_messages": 98,
+  "avg_views": 1234.5,
+  "first_post_date": "2022-12-13T00:00:00",
+  "last_post_date": "2023-02-10T00:00:00"
+}
 ```
 
----
-
-## 🔐 Security Best Practices
-
-### Secrets Management
-- **Never commit** `.env` or `*.session` files
-- **Use environment variables** for all credentials
-- **Review `.gitignore`** before committing
-
-### Gitignore Coverage
+#### 3. Message Search
+```http
+GET /api/search/messages?query=product&limit=20
 ```
-.env
-*.session
-*.session-journal
-venv/
-__pycache__/
-*.log
+
+**Response:**
+```json
+{
+  "total": 2,
+  "data": [
+    {
+      "message_id": 123,
+      "channel_name": "CheMed123",
+      "message_date": "2023-01-15T10:30:00",
+      "message_text": "New product available...",
+      "view_count": 1500
+    }
+  ]
+}
+```
+
+#### 4. Visual Content Stats
+```http
+GET /api/reports/visual-content
+```
+
+**Response:**
+```json
+[
+  {
+    "channel_name": "CheMed123",
+    "image_category": "product_display",
+    "count": 19
+  },
+  {
+    "channel_name": "DoctorsET",
+    "image_category": "promotional",
+    "count": 32
+  }
+]
+```
+
+### Testing the API
+
+**Option 1: Swagger UI**
+Visit http://127.0.0.1:8000/docs
+
+**Option 2: Python Script**
+```bash
+python scripts/test_api.py
+```
+
+**Option 3: curl**
+```bash
+curl http://127.0.0.1:8000/api/reports/top-products
 ```
 
 ---
 
-## 📊 Sample Output
+## Project Structure
 
-After running the scraper:
+```
+medical-telegram-warehouse/
+├── api/
+│   ├── __init__.py
+│   ├── main.py              # FastAPI app & endpoints
+│   ├── database.py          # SQLAlchemy connection
+│   └── schemas.py           # Pydantic models
+├── data/
+│   ├── raw/
+│   │   ├── images/          # Downloaded images
+│   │   └── telegram_messages/  # Scraped JSON
+│   └── yolo/
+│       └── image_detections.csv  # YOLO results
+├── medical_warehouse/       # dbt project
+│   ├── models/
+│   │   ├── staging/
+│   │   │   ├── stg_telegram_messages.sql
+│   │   │   └── stg_yolo_detections.sql
+│   │   └── marts/
+│   │       ├── dim_channels.sql
+│   │       ├── dim_dates.sql
+│   │       ├── fct_messages.sql
+│   │       └── fct_image_detections.sql
+│   ├── dbt_project.yml
+│   └── profiles.yml
+├── scripts/
+│   ├── dbt_wrapper.py       # dbt command wrapper
+│   ├── load_to_postgres.py # Raw data loader
+│   ├── load_yolo_to_postgres.py
+│   ├── generate_yolo_report.py
+│   └── test_api.py
+├── src/
+│   ├── scraper.py           # Telegram scraper
+│   └── yolo_detect.py       # Image classification
+├── .env                     # Environment variables (gitignored)
+├── .gitignore
+├── docker-compose.yml       # PostgreSQL container
+├── requirements.txt
+└── README.md
+```
+
+---
+
+## Technologies
+
+| Component | Technology |
+|-----------|-----------|
+| **Scraping** | Telethon (Telegram API) |
+| **Database** | PostgreSQL 15 |
+| **Transformation** | dbt (data build tool) |
+| **ML/AI** | YOLOv8 (Ultralytics) |
+| **API** | FastAPI + Uvicorn |
+| **ORM** | SQLAlchemy |
+| **Validation** | Pydantic |
+| **Containerization** | Docker |
+
+---
+
+## Data Quality & Testing
+
+The project includes comprehensive dbt tests:
 
 ```bash
-Scraping CheMed123...
-Finished CheMed123: 76 messages.
-Scraping lobelia4cosmetics...
-Finished lobelia4cosmetics: 100 messages.
-Scraping tikvahpharma...
-Finished tikvahpharma: 100 messages.
-Scraping DoctorsET...
-Finished DoctorsET: 100 messages.
-Scraping EAHCI...
-Finished EAHCI: 100 messages.
+# Run all tests
+python scripts/dbt_wrapper.py test
 ```
 
-**Data collected**:
-- 476+ messages across 5 channels
-- 148+ date partitions (2022-2026)
-- Images downloaded and organized by channel
+**Tests include:**
+- `not_null` checks on primary keys
+- Referential integrity (foreign key relationships)
+- Custom business logic (e.g., no future message dates)
 
 ---
 
-## 🔄 Reproducibility
+## YOLO Image Classification
 
-### Single-Command Execution
+Images are classified into 4 categories based on detected objects:
+
+| Category | Rule |
+|----------|------|
+| **promotional** | Person detected with confidence > 0.8 |
+| **product_display** | Product-like objects (bottle, book, etc.) |
+| **lifestyle** | Person detected with confidence 0.4-0.8 |
+| **other** | No significant objects or low confidence |
+
+**Example:**
 ```bash
-python src/scraper.py
+# Run detection on all images
+python src/yolo_detect.py
+
+# View results
+head data/yolo/image_detections.csv
 ```
 
-### Re-running the Scraper
-The scraper is **idempotent** for a given run. Re-running will:
-- Overwrite JSON files for the same date/channel
-- Re-download images (if already exist, they're skipped in current implementation)
-- Append to the log file
+---
 
-**Best Practice**: For incremental updates, modify the `limit` parameter in `client.iter_messages()` or implement date-based filtering.
+## Troubleshooting
+
+### Database Connection Issues
+```bash
+# Check if PostgreSQL is running
+docker ps
+
+# Restart container
+docker-compose restart
+
+# View logs
+docker logs medical_postgres
+```
+
+### dbt Errors
+```bash
+# Always use the wrapper script
+python scripts/dbt_wrapper.py run
+
+# NOT: dbt run (this won't load .env)
+```
+
+### API Not Starting
+```bash
+# Check if port 8000 is available
+netstat -ano | findstr :8000
+
+# Kill process if needed
+taskkill /PID <process_id> /F
+```
 
 ---
 
-## 🎯 Next Steps
+## Next Steps
 
-With Task 1 complete, the raw data is ready for:
-
-### Task 2: Data Modeling & Transformation
-- Load JSON into PostgreSQL (`raw.telegram_messages` table)
-- Design Star Schema (Fact + Dimension tables)
-- Use dbt to transform raw → staging → marts
-- Implement data quality tests
-
-### Task 3: YOLO Object Detection
-- Analyze images downloaded in Task 1
-- Classify images (promotional, product_display, etc.)
-- Store detection results in the warehouse
-
-### Task 4: FastAPI Analytical API
-- Expose insights via REST endpoints
-- Query the transformed data marts
-
-### Task 5: Dagster Orchestration
-- Automate the entire pipeline
-- Schedule daily scraping runs
+- [ ] Add Dagster for pipeline orchestration
+- [ ] Implement incremental data loads
+- [ ] Add more analytical endpoints
+- [ ] Create data visualization dashboard
+- [ ] Set up CI/CD pipeline
 
 ---
 
-## 📞 Support & Contributing
+## License
 
-For questions or issues:
-- Review logs in `logs/`
-- Check `.env` configuration
-- Verify Telegram API credentials
-- Ensure network connectivity
+MIT License - See LICENSE file for details
 
 ---
 
-## 📄 License
+## Contact
 
-This project is part of the Kara Solutions Data Engineering challenge.
-
----
-
-**Status**: Task 1 ✅ Complete | Last Updated: 2026-02-02
+For questions or issues, please open a GitHub issue or contact the maintainer.
