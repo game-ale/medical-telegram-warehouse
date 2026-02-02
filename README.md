@@ -143,12 +143,20 @@ python scripts/load_yolo_to_postgres.py
 python scripts/dbt_wrapper.py run
 ```
 
-#### Step 5: Start API
+#### Step 5: Pipeline Orchestration (Dagster)
+```bash
+# Start Dagster UI
+dagster dev -f pipeline.py
+```
+- Orchestrates scraping, loading, transformation, and enrichment.
+- Provides a UI at **http://localhost:3000**.
+- Automated schedule: Daily at 2 AM.
+
+#### Step 6: Start API
 ```bash
 uvicorn api.main:app --reload --port 8000
 ```
-
-Access Swagger UI: **http://127.0.0.1:8000/docs**
+- Access Swagger UI: **http://127.0.0.1:8000/docs**
 
 ---
 
@@ -443,9 +451,9 @@ taskkill /PID <process_id> /F
 
 ## Next Steps
 
-- [ ] Add Dagster for pipeline orchestration
+- [x] Add Dagster for pipeline orchestration
+- [x] Integrate YOLO image classification
 - [ ] Implement incremental data loads
-- [ ] Add more analytical endpoints
 - [ ] Create data visualization dashboard
 - [ ] Set up CI/CD pipeline
 
