@@ -1,0 +1,22 @@
+[
+    {
+        "message_id": 9,
+        "channel_name": "CheMed123",
+        "message_date": "2022-09-06T04:26:15+00:00",
+        "message_text": "www.chemeds.org መድሀኒትዎን ለማግኘት ዘመናዊው መንገድ ነው፡፡ በድረገጻችን አማካኝነት መድኃኒትዎን ከፈለጉት ቦታ ይዘዙ ያሉበት ቦታ መድሃኒትዎን እናደርስልዎታለን፡፡",
+        "views": 534,
+        "forwards": 6,
+        "has_media": true,
+        "image_path": "data/raw/images\\CheMed123\\9.jpg"
+    },
+    {
+        "message_id": 7,
+        "channel_name": "CheMed123",
+        "message_date": "2022-09-06T04:25:26+00:00",
+        "message_text": null,
+        "views": 0,
+        "forwards": 0,
+        "has_media": false,
+        "image_path": null
+    }
+]

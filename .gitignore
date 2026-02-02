@@ -1,5 +1,25 @@
+# Secrets
 .env
+.env.*
+
+# Telethon Session Files (Critical - contains auth)
+*.session
+*.session-journal
+
+# Python
 venv/
 __pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Logs
 *.log
+logs/
+
+# OS specific
 .DS_Store
+Thumbs.db
+
+# IDE specific (optional but recommended to ignore local user settings if not shared)
+.idea/

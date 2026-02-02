@@ -1,0 +1,52 @@
+[
+    {
+        "message_id": 3039,
+        "channel_name": "EAHCI",
+        "message_date": "2025-12-18T10:38:30+00:00",
+        "message_text": "",
+        "views": 4561,
+        "forwards": 0,
+        "has_media": true,
+        "image_path": "data/raw/images\\EAHCI\\3039.jpg"
+    },
+    {
+        "message_id": 3038,
+        "channel_name": "EAHCI",
+        "message_date": "2025-12-18T10:38:30+00:00",
+        "message_text": "",
+        "views": 4749,
+        "forwards": 0,
+        "has_media": true,
+        "image_path": "data/raw/images\\EAHCI\\3038.jpg"
+    },
+    {
+        "message_id": 3037,
+        "channel_name": "EAHCI",
+        "message_date": "2025-12-18T10:38:29+00:00",
+        "message_text": "**Few pictures from the practical sessions of our ongoing Basic Obstetrics Ultrasound training at Asosa!!**\n\nRegister if you want to be a part of our MOH Accredited Basic Obstetrics Ultrasound Training.",
+        "views": 3405,
+        "forwards": 0,
+        "has_media": true,
+        "image_path": "data/raw/images\\EAHCI\\3037.jpg"
+    },
+    {
+        "message_id": 3036,
+        "channel_name": "EAHCI",
+        "message_date": "2025-12-18T10:38:29+00:00",
+        "message_text": "",
+        "views": 2913,
+        "forwards": 0,
+        "has_media": true,
+        "image_path": "data/raw/images\\EAHCI\\3036.jpg"
+    },
+    {
+        "message_id": 3035,
+        "channel_name": "EAHCI",
+        "message_date": "2025-12-18T10:38:29+00:00",
+        "message_text": "",
+        "views": 2607,
+        "forwards": 0,
+        "has_media": true,
+        "image_path": "data/raw/images\\EAHCI\\3035.jpg"
+    }
+]

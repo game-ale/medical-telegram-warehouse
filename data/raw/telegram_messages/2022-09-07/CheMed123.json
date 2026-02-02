@@ -1,0 +1,12 @@
+[
+    {
+        "message_id": 10,
+        "channel_name": "CheMed123",
+        "message_date": "2022-09-07T09:16:40+00:00",
+        "message_text": "Why spend time searching for medications? Visit www.chemeds.org to have your medication delivered to your door.",
+        "views": 606,
+        "forwards": 3,
+        "has_media": true,
+        "image_path": "data/raw/images\\CheMed123\\10.jpg"
+    }
+]
