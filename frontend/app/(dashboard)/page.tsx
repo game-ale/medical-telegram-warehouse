@@ -1,6 +1,8 @@
 import { ActivityChart } from "@/components/dashboard/ActivityChart";
 import { DashboardStats } from "@/components/dashboard/DashboardStats";
 import { PipelineDAG } from "@/components/dashboard/PipelineDAG";
+import { ReportCard } from "@/components/dashboard/ReportCard";
+import { TrendChart } from "@/components/dashboard/TrendChart";
 import { TriggerButton } from "@/components/dashboard/TriggerButton";
 import { api } from "@/lib/api";
 
@@ -27,8 +29,14 @@ export default async function DashboardPage() {
 
             <DashboardStats {...stats} />
 
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-7">
+
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
                 <ActivityChart />
+                <ReportCard />
+            </div>
+
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
+                <TrendChart />
                 <PipelineDAG />
             </div>
         </div>

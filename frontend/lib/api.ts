@@ -111,6 +111,53 @@ export const api = {
     }
   },
 
+  getTopProducts: async (limit: number = 10) => {
+    const url = typeof window === 'undefined' ? `${FASTAPI_BASE}/reports/top-products?limit=${limit}` : `/api/fastapi/reports/top-products?limit=${limit}`;
+    try {
+      const res = await fetch(url, { next: { revalidate: 60 } });
+      if (!res.ok) throw new Error('Failed');
+      return await res.json();
+    } catch (e) {
+      return [
+        { keyword: "Failed to fetch", frequency: 0 },
+        { keyword: "Check API", frequency: 0 }
+      ];
+    }
+  },
+
+  getChannelActivity: async (channelName: string) => {
+    const url = typeof window === 'undefined' ? `${FASTAPI_BASE}/channels/${channelName}/activity` : `/api/fastapi/channels/${channelName}/activity`;
+    try {
+      const res = await fetch(url, { next: { revalidate: 60 } });
+      if (!res.ok) return null;
+      return await res.json();
+    } catch (e) {
+      return null;
+    }
+  },
+
+  getVisualContentStats: async () => {
+    const url = typeof window === 'undefined' ? `${FASTAPI_BASE}/reports/visual-content` : `/api/fastapi/reports/visual-content`;
+    try {
+      const res = await fetch(url, { next: { revalidate: 60 } });
+      if (!res.ok) return [];
+      return await res.json();
+    } catch (e) {
+      return [];
+    }
+  },
+
+  searchMessages: async (query: string, limit: number = 20) => {
+    const url = typeof window === 'undefined' ? `${FASTAPI_BASE}/search/messages?query=${encodeURIComponent(query)}&limit=${limit}` : `/api/fastapi/search/messages?query=${encodeURIComponent(query)}&limit=${limit}`;
+    try {
+      const res = await fetch(url, { cache: 'no-store' }); // Search should not cache
+      if (!res.ok) return { total: 0, data: [] };
+      return await res.json();
+    } catch (e) {
+      return { total: 0, data: [] };
+    }
+  },
+
   triggerPipeline: async () => {
     const pipelineName = "medical_telegram_pipeline";
     const mutation = `

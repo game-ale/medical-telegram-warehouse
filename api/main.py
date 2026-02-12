@@ -17,6 +17,10 @@ get_db = database.get_db
 def read_root():
     return {"message": "Welcome to the Medical Data Warehouse API. Go to /docs for testing."}
 
+@app.get("/api/health", tags=["Health"])
+def health_check():
+    return {"status": "healthy"}
+
 # --- 1. Top Products ---
 @app.get("/api/reports/top-products", response_model=List[schemas.ProductStatSchema], tags=["Reports"])
 def get_top_products(limit: int = 10, db: Session = Depends(get_db)):

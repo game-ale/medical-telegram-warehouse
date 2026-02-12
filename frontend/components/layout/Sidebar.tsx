@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { Activity, Clock, FileText, GitGraph, LayoutDashboard, Settings } from "lucide-react";
+import { Activity, Clock, FileBarChart, FileText, GitGraph, Image, LayoutDashboard, Search, Settings, TrendingUp, Users } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -37,6 +37,36 @@ const routes = [
         color: "text-zinc-400",
     },
     {
+        label: "Product Trends",
+        icon: TrendingUp,
+        href: "/trends",
+        color: "text-zinc-400",
+    },
+    {
+        label: "Channels",
+        icon: Users,
+        href: "/channels",
+        color: "text-zinc-400",
+    },
+    {
+        label: "Visual Content",
+        icon: Image,
+        href: "/visuals",
+        color: "text-zinc-400",
+    },
+    {
+        label: "Search",
+        icon: Search,
+        href: "/search",
+        color: "text-zinc-400",
+    },
+    {
+        label: "Reports",
+        icon: FileBarChart,
+        href: "/reports",
+        color: "text-zinc-400",
+    },
+    {
         label: "Settings",
         icon: Settings,
         href: "/settings",
@@ -64,7 +94,7 @@ export function Sidebar() {
                             className={cn(
                                 "text-sm group flex p-3 w-full justify-start font-medium cursor-pointer hover:bg-zinc-900 rounded-md transition-all duration-200",
                                 pathname === route.href
-                                    ? "bg-zinc-900 text-white shadow-sm ring-1 ring-zinc-800"
+                                    ? "bg-indigo-500/10 text-indigo-400 shadow-sm border border-indigo-500/20"
                                     : "text-zinc-500 hover:text-white"
                             )}
                         >
@@ -76,15 +106,19 @@ export function Sidebar() {
                     ))}
                 </div>
             </div>
-            <div className="px-3 py-2">
-                <div className="bg-zinc-900/50 p-4 rounded-lg border border-zinc-900">
-                    <h4 className="text-xs font-semibold text-zinc-400 mb-2">System Status</h4>
-                    <div className="flex items-center gap-2">
-                        <div className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></div>
-                        <span className="text-xs text-zinc-300">Operational</span>
+
+
+            <div className="px-3 py-2 border-t border-zinc-900 mt-auto">
+                <div className="flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-zinc-900 cursor-pointer transition-colors">
+                    <div className="h-9 w-9 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center text-white font-bold text-xs">
+                        DA
+                    </div>
+                    <div className="flex-1 overflow-hidden">
+                        <p className="text-sm font-medium text-white truncate">Dr. Amani</p>
+                        <p className="text-xs text-zinc-500 truncate">Analyst</p>
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     );
 }
