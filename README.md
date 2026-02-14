@@ -1,85 +1,196 @@
-# Medical Data Warehouse
+# 🏥 EthioMedIntel - Medical Telegram Intelligence Platform
 
-End-to-end data pipeline for Telegram medical channel analytics, featuring data scraping, transformation, YOLO-based image enrichment, and a REST API.
+> **End-to-end data pipeline and analytics platform for Ethiopian medical Telegram channels**
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Python 3.12+](https://img.shields.io/badge/python-3.12+-blue.svg)](https://www.python.org/downloads/)
+[![Next.js 16](https://img.shields.io/badge/Next.js-16-black)](https://nextjs.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.100+-green.svg)](https://fastapi.tiangolo.com/)
+
+---
+
+## 📹 Demo Video
+
+<!-- 
+🎬 **Add your demo video here!**
+Replace this comment with your video embed or link:
+
+### Option 1: YouTube Embed
+[![Demo Video](https://img.youtube.com/vi/YOUR_VIDEO_ID/maxresdefault.jpg)](https://www.youtube.com/watch?v=YOUR_VIDEO_ID)
+
+### Option 2: Direct Video Link
+[📺 Watch Demo Video](https://your-video-link.com)
+
+### Option 3: Local Video (if hosting on GitHub)
+![Demo](./assets/demo.gif)
+-->
+
+**🚀 Coming Soon - Full Platform Walkthrough**
+
+---
 
 ## 📋 Table of Contents
 
-- [Overview](#overview)
-- [Architecture](#architecture)
-- [Setup & Installation](#setup--installation)
-- [Usage Guide](#usage-guide)
-- [API Documentation](#api-documentation)
-- [Project Structure](#project-structure)
-- [Technologies](#technologies)
+- [Overview](#-overview)
+- [Features](#-features)
+- [Architecture](#-architecture)
+- [Tech Stack](#-tech-stack)
+- [Getting Started](#-getting-started)
+- [Usage](#-usage)
+- [API Documentation](#-api-documentation)
+- [Project Structure](#-project-structure)
+- [Screenshots](#-screenshots)
+- [Contributing](#-contributing)
+- [License](#-license)
 
 ---
 
-## Overview
+## 🎯 Overview
 
-This project builds a complete data warehouse pipeline:
+**EthioMedIntel** is a comprehensive data intelligence platform designed for the Ethiopian medical industry. It scrapes, processes, and analyzes data from Telegram medical channels, providing actionable insights through a beautiful, modern web interface.
 
-1. **Extract**: Scrape messages and images from Telegram medical channels
-2. **Load**: Store raw data in PostgreSQL
-3. **Transform**: Clean and model data using dbt (star schema)
-4. **Enrich**: Classify images using YOLOv8 object detection
-5. **Serve**: Expose insights via FastAPI REST endpoints
+### What It Does
 
-**Key Features:**
-- 📊 Dimensional data modeling (fact & dimension tables)
-- 🖼️ Image classification (promotional, product_display, lifestyle, other)
-- 🔍 Full-text message search
-- 📈 Channel activity analytics
-- ✅ Data quality tests with dbt
+1. **📥 Data Collection**: Automatically scrapes messages and images from Ethiopian medical Telegram channels
+2. **🔄 ETL Pipeline**: Transforms raw data into a structured star schema using dbt
+3. **🤖 AI Enrichment**: Classifies images using YOLOv8 object detection
+4. **📊 Analytics Dashboard**: Visualizes trends, channel performance, and product mentions
+5. **🔍 Intelligent Search**: Full-text search with advanced filtering and detail views
+6. **🌓 Multi-Theme Support**: Beautiful light and dark modes
 
 ---
 
-## Architecture
+## ✨ Features
+
+### 🎨 Frontend (Next.js + React)
+- **Premium UI/UX**: Linear-inspired design with glassmorphism and smooth animations
+- **Dashboard Analytics**: Real-time business metrics, activity charts, and trending products
+- **Market Intelligence Search**: Advanced search with filters, pagination, and beautiful detail modals
+- **Channel Performance**: Track engagement, posting frequency, and growth metrics
+- **Visual Content Analysis**: Browse and analyze images from medical channels
+- **Reports Generation**: Export insights and analytics
+- **Theme Switching**: Seamless light/dark mode with `next-themes`
+
+### ⚙️ Backend (FastAPI + PostgreSQL)
+- **RESTful API**: Fast, documented endpoints with automatic OpenAPI/Swagger docs
+- **Star Schema**: Optimized dimensional data model for analytics
+- **Full-Text Search**: PostgreSQL-powered message search
+- **Data Quality**: Comprehensive dbt tests and validations
+- **Image Classification**: YOLO-based categorization (promotional, product, lifestyle, other)
+
+### 🔧 Data Pipeline (Dagster + dbt)
+- **Orchestration**: Automated daily pipeline runs with Dagster
+- **Transformations**: Clean, tested dbt models (staging → marts)
+- **Incremental Loads**: Efficient data updates
+- **Monitoring**: Pipeline health checks and error tracking
+
+---
+
+## 🏗️ Architecture
 
 ```
-Telegram Channels
-      ↓
-[Scraper (Telethon)] → data/raw/
-      ↓
-[PostgreSQL (raw schema)]
-      ↓
-[dbt Transformations] → public_marts schema
-      ↓                    ├── dim_channels
-      ↓                    ├── dim_dates
-      ↓                    ├── fct_messages
-      ↓                    └── fct_image_detections
-[FastAPI] → REST Endpoints
+┌─────────────────────────────────────────────────────────────┐
+│                    Telegram Channels                         │
+│              (Ethiopian Medical Communities)                 │
+└────────────────────┬────────────────────────────────────────┘
+                     │
+                     ▼
+┌─────────────────────────────────────────────────────────────┐
+│                  Scraper (Telethon)                          │
+│         • Messages  • Images  • Metadata                     │
+└────────────────────┬────────────────────────────────────────┘
+                     │
+                     ▼
+┌─────────────────────────────────────────────────────────────┐
+│              PostgreSQL (Raw Schema)                         │
+│                raw.telegram_messages                         │
+└────────────────────┬────────────────────────────────────────┘
+                     │
+                     ▼
+┌─────────────────────────────────────────────────────────────┐
+│                 dbt Transformations                          │
+│   Staging → Marts (Star Schema)                             │
+│   • dim_channels  • dim_dates                                │
+│   • fct_messages  • fct_image_detections                     │
+└────────────────────┬────────────────────────────────────────┘
+                     │
+          ┌──────────┴──────────┐
+          ▼                     ▼
+┌──────────────────┐  ┌──────────────────────┐
+│   FastAPI        │  │   Next.js Frontend   │
+│   REST API       │  │   • Dashboard        │
+│   Port: 8000     │  │   • Search           │
+└──────────────────┘  │   • Analytics        │
+                      │   Port: 3000         │
+                      └──────────────────────┘
 ```
 
-**Data Model (Star Schema):**
-- **Fact Tables**: `fct_messages`, `fct_image_detections`
-- **Dimension Tables**: `dim_channels`, `dim_dates`
+### Data Model (Star Schema)
+
+**Fact Tables:**
+- `fct_messages` - Message-level data with metrics
+- `fct_image_detections` - YOLO classification results
+
+**Dimension Tables:**
+- `dim_channels` - Channel metadata and aggregates
+- `dim_dates` - Date dimension for time-series analysis
 
 ---
 
-## Setup & Installation
+## 🛠️ Tech Stack
+
+### Frontend
+| Technology | Purpose |
+|-----------|---------|
+| **Next.js 16** | React framework with App Router |
+| **TypeScript** | Type-safe development |
+| **Tailwind CSS** | Utility-first styling |
+| **shadcn/ui** | Premium UI components |
+| **Recharts** | Data visualization |
+| **next-themes** | Theme management |
+| **Lucide Icons** | Beautiful icon library |
+
+### Backend
+| Technology | Purpose |
+|-----------|---------|
+| **FastAPI** | High-performance API framework |
+| **PostgreSQL 15** | Relational database |
+| **SQLAlchemy** | ORM and query builder |
+| **Pydantic** | Data validation |
+| **dbt** | Data transformation |
+| **Dagster** | Pipeline orchestration |
+
+### Data & ML
+| Technology | Purpose |
+|-----------|---------|
+| **Telethon** | Telegram API client |
+| **YOLOv8** | Object detection |
+| **Pandas** | Data manipulation |
+| **Docker** | Containerization |
+
+---
+
+## 🚀 Getting Started
 
 ### Prerequisites
 
-- Python 3.8+
-- Docker & Docker Compose
-- Telegram API credentials ([get them here](https://my.telegram.org))
+- **Python 3.12+**
+- **Node.js 18+**
+- **Docker Desktop**
+- **Telegram API Credentials** ([Get them here](https://my.telegram.org))
 
-### 1. Clone & Environment Setup
+### Quick Start
+
+#### 1. Clone the Repository
 
 ```bash
-cd C:\tele\medical-telegram-warehouse
-
-# Create virtual environment
-python -m venv venv
-venv\Scripts\activate
-
-# Install dependencies
-pip install -r requirements.txt
+git clone https://github.com/yourusername/medical-telegram-warehouse.git
+cd medical-telegram-warehouse
 ```
 
-### 2. Configure Environment Variables
+#### 2. Environment Setup
 
-Create `.env` file in project root:
+Create `.env` file in the project root:
 
 ```env
 # Telegram API
@@ -91,249 +202,196 @@ PHONE_NUMBER=your_phone_number
 DB_USER=postgres
 DB_PASSWORD=postgres
 DB_HOST=localhost
-DB_PORT=5432
+DB_PORT=5433
 DB_NAME=medical_warehouse
 ```
 
-### 3. Start PostgreSQL
+#### 3. Install Dependencies
 
+**Backend:**
 ```bash
-docker-compose up -d
+python -m venv venv
+venv\Scripts\activate  # Windows
+# source venv/bin/activate  # macOS/Linux
+
+pip install -r requirements.txt
 ```
 
-Verify database is running:
+**Frontend:**
 ```bash
-docker exec -it medical_postgres psql -U postgres -d medical_warehouse
+cd frontend
+npm install
+cd ..
 ```
 
-### 4. Run the Pipeline
+#### 4. Start the Application
 
-#### Step 1: Scrape Data
+Follow the commands in order (each in a separate terminal):
+
+**Terminal 1 - Database:**
 ```bash
-python src/scraper.py
-```
-- Scrapes messages from configured channels
-- Downloads images to `data/raw/images/`
-- Saves metadata to `data/raw/telegram_messages/`
-
-#### Step 2: Load to Database
-```bash
-python scripts/load_to_postgres.py
-```
-- Creates `raw.telegram_messages` table
-- Loads JSON data into PostgreSQL
-
-#### Step 3: Transform with dbt
-```bash
-python scripts/dbt_wrapper.py run
-python scripts/dbt_wrapper.py test
-```
-- Builds staging and mart models
-- Runs data quality tests
-
-#### Step 4: YOLO Image Enrichment
-```bash
-# Run object detection
-python src/yolo_detect.py
-
-# Load detections to database
-python scripts/load_yolo_to_postgres.py
-
-# Rebuild dbt models with YOLO data
-python scripts/dbt_wrapper.py run
+docker-compose up -d postgres
 ```
 
-#### Step 5: Pipeline Orchestration (Dagster)
+**Terminal 2 - Dagster:**
 ```bash
-# Start Dagster UI
 dagster dev -f pipeline.py
 ```
-- Orchestrates scraping, loading, transformation, and enrichment.
-- Provides a UI at **http://localhost:3000**.
-- Automated schedule: Daily at 2 AM.
+Access Dagster UI at: http://localhost:3001
 
-#### Step 6: Start API
+**Terminal 3 - API:**
 ```bash
 uvicorn api.main:app --reload --port 8000
 ```
-- Access Swagger UI: **http://127.0.0.1:8000/docs**
+Access API docs at: http://localhost:8000/docs
 
----
-
-## Usage Guide
-
-### Scraping New Channels
-
-Edit `src/scraper.py` to add channels:
-
-```python
-CHANNELS = [
-    'CheMed123',
-    'DoctorsET',
-    'your_new_channel'
-]
-```
-
-### Running dbt Commands
-
-Always use the wrapper script to load environment variables:
-
+**Terminal 4 - Frontend:**
 ```bash
-# Run models
-python scripts/dbt_wrapper.py run
-
-# Run tests
-python scripts/dbt_wrapper.py test
-
-# Generate documentation
-python scripts/dbt_wrapper.py docs generate
-python scripts/dbt_wrapper.py docs serve
+cd frontend
+npm run dev
 ```
+Access application at: http://localhost:3000
 
-### Querying the Warehouse
-
-```sql
--- Connect to database
-docker exec -it medical_postgres psql -U postgres -d medical_warehouse
-
--- Top channels by messages
-SELECT channel_name, total_posts, avg_views
-FROM public_marts.dim_channels
-ORDER BY total_posts DESC;
-
--- Messages with promotional images
-SELECT m.message_text, i.image_category, i.detected_object
-FROM public_marts.fct_messages m
-JOIN public_marts.fct_image_detections i ON m.message_id = i.message_id
-WHERE i.image_category = 'promotional';
-```
+> 💡 **Tip**: See [STARTUP_GUIDE.md](./STARTUP_GUIDE.md) for detailed startup instructions and troubleshooting.
 
 ---
 
-## API Documentation
+## 📖 Usage
+
+### Running the Data Pipeline
+
+#### 1. Scrape Telegram Data
+```bash
+python src/scraper.py
+```
+Downloads messages and images from configured channels.
+
+#### 2. Load to Database
+```bash
+python scripts/load_to_postgres.py
+```
+Loads raw JSON data into PostgreSQL.
+
+#### 3. Transform with dbt
+```bash
+python scripts/dbt_wrapper.py run
+python scripts/dbt_wrapper.py test
+```
+Builds star schema and runs data quality tests.
+
+#### 4. Enrich with YOLO
+```bash
+python src/yolo_detect.py
+python scripts/load_yolo_to_postgres.py
+python scripts/dbt_wrapper.py run
+```
+Classifies images and updates the warehouse.
+
+#### 5. Orchestrate with Dagster
+```bash
+dagster dev -f pipeline.py
+```
+Automates the entire pipeline on a schedule.
+
+### Using the Web Application
+
+1. **Dashboard** (`/`) - View business metrics and activity trends
+2. **Search** (`/search`) - Search messages with advanced filters
+   - Try keywords: `medical`, `hospital`, `equipment`
+   - Click result cards to view beautiful detail modals
+3. **Product Trends** (`/trends`) - Analyze trending medical products
+4. **Channels** (`/channels`) - Monitor channel performance
+5. **Visual Content** (`/visuals`) - Browse classified images
+6. **Reports** (`/reports`) - Generate analytics reports
+
+---
+
+## 📡 API Documentation
 
 ### Base URL
 ```
-http://127.0.0.1:8000
+http://localhost:8000
 ```
 
-### Endpoints
+### Key Endpoints
 
-#### 1. Top Products
+#### Search Messages
 ```http
-GET /api/reports/top-products?limit=10
-```
-
-**Response:**
-```json
-[
-  {
-    "keyword": "telegram",
-    "frequency": 207
-  },
-  {
-    "keyword": "pharmacy",
-    "frequency": 116
-  }
-]
-```
-
-#### 2. Channel Activity
-```http
-GET /api/channels/{channel_name}/activity
-```
-
-**Example:**
-```bash
-curl http://127.0.0.1:8000/api/channels/CheMed123/activity
+GET /api/search/messages?query=medical&limit=20
 ```
 
 **Response:**
 ```json
 {
-  "channel_name": "CheMed123",
-  "total_messages": 98,
-  "avg_views": 1234.5,
-  "first_post_date": "2022-12-13T00:00:00",
-  "last_post_date": "2023-02-10T00:00:00"
-}
-```
-
-#### 3. Message Search
-```http
-GET /api/search/messages?query=product&limit=20
-```
-
-**Response:**
-```json
-{
-  "total": 2,
+  "total": 5,
   "data": [
     {
-      "message_id": 123,
-      "channel_name": "CheMed123",
-      "message_date": "2023-01-15T10:30:00",
-      "message_text": "New product available...",
-      "view_count": 1500
+      "message_id": 190002,
+      "channel_name": "tikvmedicalequipment",
+      "message_date": "2022-02-08T00:00:00",
+      "message_text": "Medical equipment available...",
+      "view_count": 495
     }
   ]
 }
 ```
 
-#### 4. Visual Content Stats
+#### Business Summary
+```http
+GET /api/reports/summary
+```
+
+#### Top Products
+```http
+GET /api/reports/top-products?limit=10
+```
+
+#### Channel Activity
+```http
+GET /api/channels/{channel_name}/activity
+```
+
+#### Visual Content Stats
 ```http
 GET /api/reports/visual-content
 ```
 
-**Response:**
-```json
-[
-  {
-    "channel_name": "CheMed123",
-    "image_category": "product_display",
-    "count": 19
-  },
-  {
-    "channel_name": "DoctorsET",
-    "image_category": "promotional",
-    "count": 32
-  }
-]
-```
-
-### Testing the API
-
-**Option 1: Swagger UI**
-Visit http://127.0.0.1:8000/docs
-
-**Option 2: Python Script**
-```bash
-python scripts/test_api.py
-```
-
-**Option 3: curl**
-```bash
-curl http://127.0.0.1:8000/api/reports/top-products
-```
+**Full API Documentation:** http://localhost:8000/docs (Swagger UI)
 
 ---
 
-## Project Structure
+## 📁 Project Structure
 
 ```
 medical-telegram-warehouse/
-├── api/
-│   ├── __init__.py
-│   ├── main.py              # FastAPI app & endpoints
-│   ├── database.py          # SQLAlchemy connection
-│   └── schemas.py           # Pydantic models
-├── data/
-│   ├── raw/
-│   │   ├── images/          # Downloaded images
-│   │   └── telegram_messages/  # Scraped JSON
-│   └── yolo/
-│       └── image_detections.csv  # YOLO results
-├── medical_warehouse/       # dbt project
+├── 📱 frontend/                    # Next.js application
+│   ├── app/
+│   │   ├── (dashboard)/           # Dashboard routes
+│   │   │   ├── page.tsx          # Main dashboard
+│   │   │   ├── search/           # Market intelligence
+│   │   │   ├── trends/           # Product trends
+│   │   │   ├── channels/         # Channel analytics
+│   │   │   ├── visuals/          # Visual content
+│   │   │   └── reports/          # Reports
+│   │   ├── layout.tsx            # Root layout with ThemeProvider
+│   │   └── globals.css           # Global styles + theme variables
+│   ├── components/
+│   │   ├── dashboard/            # Dashboard widgets
+│   │   ├── search/               # Search components
+│   │   ├── layout/               # Sidebar, header
+│   │   ├── ui/                   # shadcn/ui components
+│   │   ├── theme-provider.tsx
+│   │   └── mode-toggle.tsx
+│   ├── lib/
+│   │   └── api.ts                # API client
+│   └── package.json
+│
+├── 🔧 api/                         # FastAPI backend
+│   ├── main.py                   # API routes
+│   ├── database.py               # Database connection
+│   └── schemas.py                # Pydantic models
+│
+├── 📊 medical_warehouse/           # dbt project
 │   ├── models/
 │   │   ├── staging/
 │   │   │   ├── stg_telegram_messages.sql
@@ -345,126 +403,219 @@ medical-telegram-warehouse/
 │   │       └── fct_image_detections.sql
 │   ├── dbt_project.yml
 │   └── profiles.yml
-├── scripts/
-│   ├── dbt_wrapper.py       # dbt command wrapper
-│   ├── load_to_postgres.py # Raw data loader
+│
+├── 🤖 src/                         # Data collection & ML
+│   ├── scraper.py                # Telegram scraper
+│   └── yolo_detect.py            # Image classification
+│
+├── 📜 scripts/                     # Utility scripts
+│   ├── dbt_wrapper.py
+│   ├── load_to_postgres.py
 │   ├── load_yolo_to_postgres.py
-│   ├── generate_yolo_report.py
 │   └── test_api.py
-├── src/
-│   ├── scraper.py           # Telegram scraper
-│   └── yolo_detect.py       # Image classification
-├── .env                     # Environment variables (gitignored)
-├── .gitignore
-├── docker-compose.yml       # PostgreSQL container
-├── requirements.txt
-└── README.md
+│
+├── 📦 data/                        # Data storage
+│   ├── raw/
+│   │   ├── images/
+│   │   └── telegram_messages/
+│   └── yolo/
+│
+├── 🐳 docker-compose.yml           # PostgreSQL container
+├── 📋 pipeline.py                  # Dagster pipeline
+├── 📝 STARTUP_GUIDE.md            # Detailed startup guide
+├── ⚙️ requirements.txt
+├── 🔐 .env                         # Environment variables
+└── 📖 README.md
 ```
 
 ---
 
-## Technologies
+## 📸 Screenshots
 
-| Component | Technology |
-|-----------|-----------|
-| **Scraping** | Telethon (Telegram API) |
-| **Database** | PostgreSQL 15 |
-| **Transformation** | dbt (data build tool) |
-| **ML/AI** | YOLOv8 (Ultralytics) |
-| **API** | FastAPI + Uvicorn |
-| **ORM** | SQLAlchemy |
-| **Validation** | Pydantic |
-| **Containerization** | Docker |
+<!-- 
+🖼️ **Add your screenshots here!**
+
+### Dashboard
+![Dashboard](./assets/screenshots/dashboard.png)
+
+### Search Intelligence
+![Search](./assets/screenshots/search.png)
+
+### Detail Modal
+![Detail Modal](./assets/screenshots/detail-modal.png)
+
+### Light Mode
+![Light Mode](./assets/screenshots/light-mode.png)
+-->
+
+**📷 Screenshots coming soon!**
 
 ---
 
-## Data Quality & Testing
+## 🎨 Features Showcase
 
-The project includes comprehensive dbt tests:
+### 🌓 Multi-Theme Support
+- Seamless light/dark mode switching
+- Theme-aware components using semantic Tailwind variables
+- Persistent theme preference with `next-themes`
 
+### 🔍 Intelligent Search
+- Full-text search across all messages
+- Advanced filtering (date range, channels, content type)
+- Beautiful detail modals with gradient accents
+- Pagination and sorting
+
+### 📊 Analytics Dashboard
+- Real-time business metrics
+- Interactive activity charts (Recharts)
+- Trending products widget
+- Active channels monitoring
+
+### 🎯 Premium UI/UX
+- Linear-inspired design language
+- Glassmorphism effects
+- Smooth micro-animations
+- Responsive layouts
+- Premium typography (Inter font)
+
+---
+
+## 🧪 Testing
+
+### Run dbt Tests
 ```bash
-# Run all tests
 python scripts/dbt_wrapper.py test
 ```
 
-**Tests include:**
-- `not_null` checks on primary keys
-- Referential integrity (foreign key relationships)
-- Custom business logic (e.g., no future message dates)
-
----
-
-## YOLO Image Classification
-
-Images are classified into 4 categories based on detected objects:
-
-| Category | Rule |
-|----------|------|
-| **promotional** | Person detected with confidence > 0.8 |
-| **product_display** | Product-like objects (bottle, book, etc.) |
-| **lifestyle** | Person detected with confidence 0.4-0.8 |
-| **other** | No significant objects or low confidence |
-
-**Example:**
+### Test API Endpoints
 ```bash
-# Run detection on all images
-python src/yolo_detect.py
+python scripts/test_api.py
+```
 
-# View results
-head data/yolo/image_detections.csv
+### Manual API Testing
+```bash
+# Health check
+curl http://localhost:8000/api/health
+
+# Search
+curl "http://localhost:8000/api/search/messages?query=medical&limit=5"
 ```
 
 ---
 
-## Troubleshooting
+## 🐛 Troubleshooting
 
-### Database Connection Issues
+### Database Not Running
 ```bash
-# Check if PostgreSQL is running
+# Check Docker status
 docker ps
 
-# Restart container
-docker-compose restart
+# Start PostgreSQL
+docker-compose up -d postgres
 
 # View logs
 docker logs medical_postgres
 ```
 
-### dbt Errors
+### Frontend Not Loading
 ```bash
-# Always use the wrapper script
-python scripts/dbt_wrapper.py run
-
-# NOT: dbt run (this won't load .env)
+# Clear Next.js cache
+cd frontend
+rm -rf .next
+npm run dev
 ```
 
-### API Not Starting
+### API Connection Errors
 ```bash
-# Check if port 8000 is available
-netstat -ano | findstr :8000
+# Check if API is running
+curl http://localhost:8000/api/health
 
-# Kill process if needed
-taskkill /PID <process_id> /F
+# Restart API
+# Press Ctrl+C in API terminal, then:
+uvicorn api.main:app --reload --port 8000
 ```
 
----
-
-## Next Steps
-
-- [x] Add Dagster for pipeline orchestration
-- [x] Integrate YOLO image classification
-- [ ] Implement incremental data loads
-- [ ] Create data visualization dashboard
-- [ ] Set up CI/CD pipeline
+### Search Returns No Results
+The database contains messages in **Amharic** about Ethiopian medical topics. Try these keywords:
+- `medical`
+- `hospital`
+- `equipment`
+- `ሆስፒታል` (hospital in Amharic)
+- `ጤና` (health in Amharic)
 
 ---
 
-## License
+## 🗺️ Roadmap
 
-MIT License - See LICENSE file for details
+- [x] Data scraping and ETL pipeline
+- [x] Star schema data warehouse
+- [x] YOLO image classification
+- [x] FastAPI REST endpoints
+- [x] Next.js frontend with premium UI
+- [x] Multi-theme support (light/dark mode)
+- [x] Search with detail modals
+- [x] Dagster orchestration
+- [ ] Real-time data updates
+- [ ] Advanced analytics (sentiment analysis)
+- [ ] User authentication
+- [ ] Export reports (PDF/Excel)
+- [ ] Mobile app (React Native)
+- [ ] CI/CD pipeline
 
 ---
 
-## Contact
+## 🤝 Contributing
 
-For questions or issues, please open a GitHub issue or contact the maintainer.
+Contributions are welcome! Please follow these steps:
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+## 👨‍💻 Author
+
+**Your Name**
+- GitHub: [@yourusername](https://github.com/yourusername)
+- LinkedIn: [Your LinkedIn](https://linkedin.com/in/yourprofile)
+- Email: your.email@example.com
+
+---
+
+## 🙏 Acknowledgments
+
+- [shadcn/ui](https://ui.shadcn.com/) for the beautiful component library
+- [Ultralytics](https://ultralytics.com/) for YOLOv8
+- [dbt](https://www.getdbt.com/) for data transformation
+- [FastAPI](https://fastapi.tiangolo.com/) for the amazing API framework
+- [Next.js](https://nextjs.org/) for the powerful React framework
+
+---
+
+## 📞 Support
+
+If you encounter any issues or have questions:
+
+1. Check the [STARTUP_GUIDE.md](./STARTUP_GUIDE.md)
+2. Review the [Troubleshooting](#-troubleshooting) section
+3. Open an issue on GitHub
+4. Contact the maintainer
+
+---
+
+<div align="center">
+
+**⭐ Star this repo if you find it helpful!**
+
+Made with ❤️ for the Ethiopian Medical Community
+
+</div>
