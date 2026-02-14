@@ -580,8 +580,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **Your Name**
 - GitHub: [game-ale](https://github.com/game-ale)
-- LinkedIn: [Your LinkedIn](https://www.linkedin.com/in/gemechu-alemu-bedasa-9a5185338/)
-- Email: gemechualemu.gmail.com
+- LinkedIn: [Gemechu Alemu](https://www.linkedin.com/in/gemechu-alemu-bedasa-9a5185338/)
+- Email: alemugemechu44@gmail.com
 
 ---
 
