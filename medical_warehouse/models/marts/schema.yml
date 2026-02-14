@@ -1,0 +1,52 @@
+version: 2
+
+models:
+  - name: dim_channels
+    columns:
+      - name: channel_key
+        tests:
+          - unique
+          - not_null
+
+  - name: dim_dates
+    columns:
+      - name: date_key
+        tests:
+          - unique
+          - not_null
+
+  - name: fct_messages
+    columns:
+      - name: message_id
+        tests:
+          - unique
+          - not_null
+      - name: channel_key
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_channels')
+              field: channel_key
+      - name: date_key
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_dates')
+              field: date_key
+
+  - name: fct_image_detections
+    columns:
+      - name: message_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('fct_messages')
+              field: message_id
+      - name: image_category
+        tests:
+          - not_null
+      - name: confidence_score
+        tests:
+          - not_null
+          # dbt-utils or standard sql check for range 0-1 if strict
+

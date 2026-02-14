@@ -1,0 +1,22 @@
+[
+    {
+        "message_id": 43,
+        "channel_name": "CheMed123",
+        "message_date": "2022-12-02T13:44:41+00:00",
+        "message_text": "የChe-Med የመድሃኒት መረጃ ማዕከል በቅርብ ቀን!\n\nwww.chemeds.org\n0912603463",
+        "views": 933,
+        "forwards": 4,
+        "has_media": true,
+        "image_path": "data/raw/images\\CheMed123\\43.jpg"
+    },
+    {
+        "message_id": 41,
+        "channel_name": "CheMed123",
+        "message_date": "2022-12-02T06:06:12+00:00",
+        "message_text": "Order your Antipains from Che-Med. It will be delivered to you with in 30 minutes.\nwww.chemeds.org\n+251912603463",
+        "views": 880,
+        "forwards": 3,
+        "has_media": true,
+        "image_path": "data/raw/images\\CheMed123\\41.jpg"
+    }
+]

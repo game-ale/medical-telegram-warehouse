@@ -1,0 +1,22 @@
+[
+    {
+        "message_id": 835,
+        "channel_name": "DoctorsET",
+        "message_date": "2022-04-29T18:59:05+00:00",
+        "message_text": "",
+        "views": 15697,
+        "forwards": 4,
+        "has_media": true,
+        "image_path": "data/raw/images\\DoctorsET\\835.jpg"
+    },
+    {
+        "message_id": 834,
+        "channel_name": "DoctorsET",
+        "message_date": "2022-04-29T18:57:35+00:00",
+        "message_text": "",
+        "views": 14841,
+        "forwards": 3,
+        "has_media": true,
+        "image_path": "data/raw/images\\DoctorsET\\834.jpg"
+    }
+]
