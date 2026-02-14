@@ -9,7 +9,7 @@
 
 ## 📹 Demo Video
 
-[![Demo Video](https://img.youtube.com/vi/YOUR_VIDEO_ID/maxresdefault.jpg)](https://www.youtube.com/watch?v=YOUR_VIDEO_ID)
+[![Demo Video](https://github.com/user-attachments/assets/693deff3-d319-4200-bcfc-f3c3ac7b395)](https://github.com/user-attachments/assets/693deff3-d319-4200-bcfc-f3c3ac7b395)
 
 
 ## 📋 Table of Contents
