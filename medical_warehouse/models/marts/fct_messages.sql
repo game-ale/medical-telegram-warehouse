@@ -14,6 +14,7 @@ select
     stg.message_id,
     dim_channels.channel_key,
     dim_dates.date_key,
+    stg.message_date,
     stg.message_text,
     stg.message_length,
     stg.views as view_count,

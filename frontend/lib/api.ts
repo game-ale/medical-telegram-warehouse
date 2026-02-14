@@ -158,6 +158,39 @@ export const api = {
     }
   },
 
+  getTopChannels: async (limit: number = 5) => {
+    const url = typeof window === 'undefined' ? `${FASTAPI_BASE}/reports/top-channels?limit=${limit}` : `/api/fastapi/reports/top-channels?limit=${limit}`;
+    try {
+      const res = await fetch(url, { next: { revalidate: 30 } });
+      if (!res.ok) return [];
+      return await res.json();
+    } catch (e) {
+      return [];
+    }
+  },
+
+  getBusinessSummary: async () => {
+    const url = typeof window === 'undefined' ? `${FASTAPI_BASE}/reports/summary` : `/api/fastapi/reports/summary`;
+    try {
+      const res = await fetch(url, { next: { revalidate: 30 } });
+      if (!res.ok) return null;
+      return await res.json();
+    } catch (e) {
+      return null;
+    }
+  },
+
+  getDailyActivity: async () => {
+    const url = typeof window === 'undefined' ? `${FASTAPI_BASE}/reports/activity` : `/api/fastapi/reports/activity`;
+    try {
+      const res = await fetch(url, { next: { revalidate: 30 } });
+      if (!res.ok) return { daily: [] };
+      return await res.json();
+    } catch (e) {
+      return { daily: [] };
+    }
+  },
+
   triggerPipeline: async () => {
     const pipelineName = "medical_telegram_pipeline";
     const mutation = `

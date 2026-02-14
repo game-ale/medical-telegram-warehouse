@@ -33,3 +33,20 @@ class SearchResponse(BaseModel):
 class ProductStatSchema(BaseModel):
     keyword: str
     frequency: int
+
+class BusinessStatsSchema(BaseModel):
+    total_posts: int
+    active_channels: int
+    products_mentioned: int
+    visual_content_rate: int
+    total_posts_growth: float
+    active_channels_growth: float
+    products_growth: float
+    visual_rate_growth: float
+
+class ActivityPoint(BaseModel):
+    date: str
+    count: int
+
+class ActivitySeriesSchema(BaseModel):
+    daily: List[ActivityPoint]
