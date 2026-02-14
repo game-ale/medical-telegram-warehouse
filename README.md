@@ -432,23 +432,13 @@ medical-telegram-warehouse/
 
 ## 📸 Screenshots
 
-<!-- 
-🖼️ **Add your screenshots here!**
+> **📷 Screenshots will be added soon to showcase the beautiful UI!**
 
-### Dashboard
-![Dashboard](./assets/screenshots/dashboard.png)
-
-### Search Intelligence
-![Search](./assets/screenshots/search.png)
-
-### Detail Modal
-![Detail Modal](./assets/screenshots/detail-modal.png)
-
-### Light Mode
-![Light Mode](./assets/screenshots/light-mode.png)
--->
-
-**📷 Screenshots coming soon!**
+The platform features:
+- 🎨 **Premium Dashboard** - Business metrics, activity charts, and trending products
+- 🔍 **Intelligent Search** - Advanced filtering with beautiful detail modals
+- 📊 **Analytics Views** - Channel performance and visual content analysis
+- 🌓 **Light & Dark Modes** - Seamless theme switching
 
 ---
 
