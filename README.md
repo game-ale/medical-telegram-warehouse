@@ -7,15 +7,10 @@
 [![Next.js 16](https://img.shields.io/badge/Next.js-16-black)](https://nextjs.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.100+-green.svg)](https://fastapi.tiangolo.com/)
 
----
-
 ## 📹 Demo Video
 
+[![Demo Video](https://img.youtube.com/vi/YOUR_VIDEO_ID/maxresdefault.jpg)](https://www.youtube.com/watch?v=YOUR_VIDEO_ID)
 
-[![Demo Video]([https://img.youtube.com/vi/YOUR_VIDEO_ID/maxresdefault.jpg)](https://www.youtube.com/watch?v=YOUR_VIDEO_ID](https://github.com/user-attachments/assets/fefd48e3-a4b7-439c-baf0-5e343c230c1c))
-
-
----
 
 ## 📋 Table of Contents
 
