@@ -11,21 +11,9 @@
 
 ## 📹 Demo Video
 
-<!-- 
-🎬 **Add your demo video here!**
-Replace this comment with your video embed or link:
 
-### Option 1: YouTube Embed
-[![Demo Video](https://img.youtube.com/vi/YOUR_VIDEO_ID/maxresdefault.jpg)](https://www.youtube.com/watch?v=YOUR_VIDEO_ID)
+[![Demo Video]([https://img.youtube.com/vi/YOUR_VIDEO_ID/maxresdefault.jpg)](https://www.youtube.com/watch?v=YOUR_VIDEO_ID](https://github.com/user-attachments/assets/fefd48e3-a4b7-439c-baf0-5e343c230c1c))
 
-### Option 2: Direct Video Link
-[📺 Watch Demo Video](https://your-video-link.com)
-
-### Option 3: Local Video (if hosting on GitHub)
-![Demo](./assets/demo.gif)
--->
-
-**🚀 Coming Soon - Full Platform Walkthrough**
 
 ---
 
