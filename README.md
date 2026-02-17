@@ -167,7 +167,7 @@
 #### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/medical-telegram-warehouse.git
+git clone https://github.com/game-ale/medical-telegram-warehouse.git
 cd medical-telegram-warehouse
 ```
 
@@ -561,8 +561,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 👨‍💻 Author
 
-**Your Name**
-- GitHub: [game-ale](https://github.com/game-ale)
+**Gemechu Alemu**
+- GitHub: [@game-ale](https://github.com/game-ale)
 - LinkedIn: [Gemechu Alemu](https://www.linkedin.com/in/gemechu-alemu-bedasa-9a5185338/)
 - Email: alemugemechu44@gmail.com
 

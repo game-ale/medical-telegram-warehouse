@@ -10,3 +10,6 @@ uvicorn
 ultralytics
 dagster
 dagster-webserver
+httpx
+pytest
+pytest-cov
