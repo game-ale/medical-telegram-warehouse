@@ -184,7 +184,7 @@ Replace this comment with your video embed or link:
 #### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/medical-telegram-warehouse.git
+git clone https://github.com/game-ale/medical-telegram-warehouse.git
 cd medical-telegram-warehouse
 ```
 
@@ -578,9 +578,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 👨‍💻 Author
 
-**Your Name**
-- GitHub: [@yourusername](https://github.com/yourusername)
-- LinkedIn: [Your LinkedIn](https://linkedin.com/in/yourprofile)
+**Gemechu Alemu**
+- GitHub: [@game-ale](https://github.com/game-ale)
+- LinkedIn: [Gemechu Alemu](https://linkedin.com/in/gemechu-alemu)
 - Email: your.email@example.com
 
 ---
