@@ -7,27 +7,10 @@
 [![Next.js 16](https://img.shields.io/badge/Next.js-16-black)](https://nextjs.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.100+-green.svg)](https://fastapi.tiangolo.com/)
 
----
-
 ## 📹 Demo Video
 
-<!-- 
-🎬 **Add your demo video here!**
-Replace this comment with your video embed or link:
-
-### Option 1: YouTube Embed
 [![Demo Video](https://img.youtube.com/vi/YOUR_VIDEO_ID/maxresdefault.jpg)](https://www.youtube.com/watch?v=YOUR_VIDEO_ID)
 
-### Option 2: Direct Video Link
-[📺 Watch Demo Video](https://your-video-link.com)
-
-### Option 3: Local Video (if hosting on GitHub)
-![Demo](./assets/demo.gif)
--->
-
-**🚀 Coming Soon - Full Platform Walkthrough**
-
----
 
 ## 📋 Table of Contents
 
@@ -580,8 +563,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **Gemechu Alemu**
 - GitHub: [@game-ale](https://github.com/game-ale)
-- LinkedIn: [Gemechu Alemu](https://linkedin.com/in/gemechu-alemu)
-- Email: your.email@example.com
+- LinkedIn: [Gemechu Alemu](https://www.linkedin.com/in/gemechu-alemu-bedasa-9a5185338/)
+- Email: alemugemechu44@gmail.com
 
 ---
 
